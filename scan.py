@@ -57,7 +57,7 @@ def build_face_map(iface):
 
 def get_mac(ip):
     pid = subprocess.Popen(["arp", "-n", ip], stdout=subprocess.PIPE)
-    result = pid.communicate()[0]
+    result = pid.communicate()[0].decode('utf-8')
     re_search = re.search(r"(([a-f\d]{1,2}\:){5}[a-f\d]{1,2})", result)
     if re_search:
         return re_search.groups()[0]
@@ -70,14 +70,14 @@ def build_global_map():
     for iface in [f for f in ifaces]:
         netmap[iface] = build_face_map(iface)
 
-    for iface, hosts in netmap.iteritems():
+    for iface, hosts in netmap.items():
         if len(hosts) == 0:
             continue
-        print "Interface {0}:\n".format(iface)
+        print("Interface {0}:\n".format(iface))
         for host in hosts:
-            print host
-            print ''
-        print ''
+            print(host)
+            print('')
+        print('')
 
 if __name__ == '__main__':
     build_global_map()
